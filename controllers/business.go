@@ -30,5 +30,6 @@ func CreateBusinessController(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Business created successfully"})
+	// TODO: return the business in the correct format
+	c.JSON(http.StatusCreated, business)
 }
