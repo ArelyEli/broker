@@ -7,12 +7,18 @@ import (
 	"arely.dev/models"
 	"arely.dev/schemas"
 	"github.com/gin-gonic/gin"
+	"github.com/golodash/galidator/v2"
+)
+
+var (
+	g          = galidator.New()
+	customizer = g.Validator(schemas.CreateBusinessRequest{})
 )
 
 func CreateBusinessController(c *gin.Context) {
 	var input schemas.CreateBusinessRequest
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": customizer.DecryptErrors(err)})
 		return
 	}
 
