@@ -8,7 +8,7 @@ import (
 
 func main() {
 	db.Init()
-	db.DB.AutoMigrate(&models.Merchant{})
+	db.DB.AutoMigrate(&models.Business{})
 
 	server.Init()
 }

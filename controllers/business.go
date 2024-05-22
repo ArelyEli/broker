@@ -9,10 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type MerchantController struct{}
-
-func (m MerchantController) CreateMerchantController(c *gin.Context) {
-	var input schemas.MerchantCreateRequest
+func CreateBusinessController(c *gin.Context) {
+	var input schemas.CreateBusinessRequest
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -22,10 +20,15 @@ func (m MerchantController) CreateMerchantController(c *gin.Context) {
 		input.Commission = rand.Float64()*99 + 1
 	}
 
-	merchant := models.Merchant{
+	business := models.Business{
 		Name:       input.Name,
 		Commission: input.Commission,
 	}
 
-	merchant.CreateMerchant()
+	if err := business.CreateBusiness(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create business"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Business created successfully"})
 }

@@ -5,12 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type Merchant struct {
+type Business struct {
 	gorm.Model
 	Name       string
 	Commission float64
 }
 
-func (m *Merchant) CreateMerchant() {
-	db.DB.Create(&m)
+func (m *Business) CreateBusiness() error {
+	return db.DB.Create(&m).Error
 }

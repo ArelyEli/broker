@@ -12,9 +12,8 @@ func Init() {
 	r.GET("/health", health.Health)
 
 	v1 := r.Group("/v1")
-	merchantGroup := v1.Group("/merchant")
-	merchant := controllers.MerchantController{}
-	merchantGroup.POST("/", merchant.CreateMerchantController)
+	businessGroup := v1.Group("/business")
+	businessGroup.POST("/", controllers.CreateBusinessController)
 
 	r.Run()
 }
