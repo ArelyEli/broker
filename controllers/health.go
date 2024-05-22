@@ -1,11 +1,13 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
 
-type HealthController struct{}
+	"github.com/gin-gonic/gin"
+)
 
-func (h HealthController) Health(c *gin.Context) {
-	c.JSON(200, gin.H{
+func Health(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
 	})
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"math/rand"
 	"net/http"
 
 	"arely.dev/models"
@@ -20,10 +19,6 @@ func CreateBusinessController(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": customizer.DecryptErrors(err)})
 		return
-	}
-
-	if input.Commission == 0 {
-		input.Commission = rand.Float64()*99 + 1
 	}
 
 	business := models.Business{

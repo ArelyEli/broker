@@ -43,12 +43,12 @@ func TestMerchantController_CreateBusiness(t *testing.T) {
 
 	CreateBusinessController(c)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusCreated, w.Code)
 
 	var createdBusiness models.Business
 	db.DB.First(&createdBusiness, "name = ?", "Test Business")
 	assert.Equal(t, requestBody.Name, createdBusiness.Name)
-	assert.Equal(t, createdBusiness.Commission, 10.0)
+	assert.Equal(t, requestBody.Commission, createdBusiness.Commission)
 }
 
 // func TestBusinessController_BadRequestCreateBusiness(t *testing.T) {

@@ -9,12 +9,11 @@ import (
 )
 
 func TestHealthController_Health(t *testing.T) {
-	healthController := HealthController{}
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	healthController.Health(c)
+	Health(c)
 
 	if w.Code != http.StatusOK {
 		t.Errorf("Expected status code 200, got %d", w.Code)

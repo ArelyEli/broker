@@ -18,5 +18,5 @@ func Init() {
 }
 
 func ClearDB() {
-	DB.Exec("DELETE FROM business")
+	DB.Exec("DELETE FROM businesses")
 }

@@ -8,8 +8,7 @@ import (
 func Init() {
 	r := gin.Default()
 
-	health := controllers.HealthController{}
-	r.GET("/health", health.Health)
+	r.GET("/health", controllers.Health)
 
 	v1 := r.Group("/v1")
 	businessGroup := v1.Group("/business")
