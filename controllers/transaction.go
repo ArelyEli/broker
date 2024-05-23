@@ -29,7 +29,7 @@ func CreateTransactionController(c *gin.Context) {
 	transaction := models.Transaction{
 		Amount:     request.Amount,
 		BusinessID: request.BusinessID,
-		Fee:        request.Amount * business.Commission,
+		Fee:        request.Amount * business.Commission / 100,
 	}
 
 	if err := transaction.CreateTransaction(); err != nil {
