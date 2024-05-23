@@ -21,7 +21,7 @@ func Init() {
 	transactionGroup.POST("/", controllers.CreateTransactionController)
 	transactionGroup.GET("/earnings", controllers.GetEarningsController)
 
-	err := r.Run()
+	err := r.Run(":3000")
 	if err != nil {
 		panic(err)
 	}
