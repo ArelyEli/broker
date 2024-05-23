@@ -23,6 +23,6 @@ func (t *Transaction) CreateTransaction() error {
 
 func (t *Transaction) GetEarnings() float64 {
 	var totalAmount float64
-	db.DB.Model(&t).Select("sum(fee) as earnings").Scan(&totalAmount)
+	db.DB.Model(&t).Select("sum(fee)").Scan(&totalAmount)
 	return totalAmount
 }

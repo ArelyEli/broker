@@ -50,6 +50,22 @@ func UpdateBusinessController(c *gin.Context) {
 		return
 	}
 
-	business.UpdateBusiness(input)
+	err := business.UpdateBusiness(input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update business"})
+		return
+	}
 	c.JSON(http.StatusOK, business)
+}
+
+func GetEarningsByBusinessController(c *gin.Context) {
+	var business models.Business
+	businessID := c.Param("id")
+	if err := business.GetBusiness(businessID); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	earnings := business.GetEarningsByBusiness(businessID)
+	c.JSON(http.StatusOK, gin.H{"earnings": earnings})
 }

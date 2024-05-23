@@ -29,3 +29,10 @@ func (m *Business) UpdateBusiness(request schemas.UpdateBusinessRequest) error {
 func (m *Business) GetBusiness(id string) error {
 	return db.DB.First(&m, "id = ?", id).Error
 }
+
+func (m *Business) GetEarningsByBusiness(business_id string) float64 {
+	transaction := Transaction{}
+	var totalAmount float64
+	db.DB.Model(&transaction).Select("sum(fee)").Where("business_id = ?", business_id).Scan(&totalAmount)
+	return totalAmount
+}

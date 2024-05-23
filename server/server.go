@@ -15,6 +15,7 @@ func Init() {
 	businessGroup := v1.Group("/business")
 	businessGroup.POST("/", controllers.CreateBusinessController)
 	businessGroup.PATCH("/:id", controllers.UpdateBusinessController)
+	businessGroup.GET("/:id/earnings", controllers.GetEarningsByBusinessController)
 
 	transactionGroup := v1.Group("/transactions")
 	transactionGroup.POST("/", controllers.CreateTransactionController)
