@@ -8,7 +8,10 @@ import (
 
 func main() {
 	db.Init()
-	db.DB.AutoMigrate(&models.Business{})
+	err := db.DB.AutoMigrate(&models.Business{})
+	if err != nil {
+		panic(err)
+	}
 
 	server.Init()
 }

@@ -14,5 +14,8 @@ func Init() {
 	businessGroup := v1.Group("/business")
 	businessGroup.POST("/", controllers.CreateBusinessController)
 
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		panic(err)
+	}
 }
