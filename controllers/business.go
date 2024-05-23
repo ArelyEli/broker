@@ -32,8 +32,15 @@ func CreateBusinessController(c *gin.Context) {
 		return
 	}
 
-	// TODO: return the business in the correct format
-	c.JSON(http.StatusCreated, business)
+	businessResponse := schemas.BusinessResponse{
+		ID:         business.ID,
+		Name:       business.Name,
+		Commission: business.Commission,
+		CreatedAt:  business.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:   business.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+
+	c.JSON(http.StatusCreated, businessResponse)
 }
 
 func UpdateBusinessController(c *gin.Context) {
@@ -55,7 +62,16 @@ func UpdateBusinessController(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update business"})
 		return
 	}
-	c.JSON(http.StatusOK, business)
+
+	businessResponse := schemas.BusinessResponse{
+		ID:         business.ID,
+		Name:       business.Name,
+		Commission: business.Commission,
+		CreatedAt:  business.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:   business.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+
+	c.JSON(http.StatusOK, businessResponse)
 }
 
 func GetEarningsByBusinessController(c *gin.Context) {
@@ -67,5 +83,6 @@ func GetEarningsByBusinessController(c *gin.Context) {
 	}
 
 	earnings := business.GetEarningsByBusiness(businessID)
+
 	c.JSON(http.StatusOK, gin.H{"earnings": earnings})
 }

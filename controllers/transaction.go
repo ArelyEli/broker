@@ -36,9 +36,16 @@ func CreateTransactionController(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create transaction"})
 		return
 	}
+	transactionResponse := schemas.TransactionResponse{
+		ID:         transaction.ID,
+		BusinessID: strconv.Itoa(int(transaction.BusinessID)),
+		Amount:     transaction.Amount,
+		Commision:  business.Commission,
+		Fee:        transaction.Fee,
+		CreatedAt:  transaction.CreatedAt.Format("2006-01-02 15:04:05"),
+	}
 
-	// TODO: return the transaction in the correct format
-	c.JSON(http.StatusCreated, transaction)
+	c.JSON(http.StatusCreated, transactionResponse)
 }
 
 func GetEarningsController(c *gin.Context) {
