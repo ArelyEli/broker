@@ -28,7 +28,14 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          
+    env:
+      DB_HOST: localhost
+      DB_USER: arely
+      DB_PASSWORD: password
+      DB_NAME: payments
+      DB_PORT: 5432
+      DB_SSLMODE: disable
+
     steps:
     - uses: actions/checkout@v4
 
@@ -37,19 +44,11 @@ jobs:
       with:
         go-version: '1.22.3'
 
-    - name: Wait for PostgreSQL
-      run: |
-        until pg_isready -h db -p 5432; do
-          echo "Waiting for PostgreSQL to be ready..."
-          sleep 5
-        done
-
-    - name: Print PostgreSQL status
-      run: |
-        pg_isready -h db -p 5432
-
     - name: Build
       run: go build -v ./...
+
+    - name: Run migrations
+      run: go run main.go -migrate
 
     - name: Test
       run: go test -v ./...
