@@ -18,6 +18,7 @@ func Init() {
 
 	transactionGroup := v1.Group("/transactions")
 	transactionGroup.POST("/", controllers.CreateTransactionController)
+	transactionGroup.GET("/earnings", controllers.GetEarningsController)
 
 	err := r.Run()
 	if err != nil {

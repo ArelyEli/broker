@@ -40,3 +40,9 @@ func CreateTransactionController(c *gin.Context) {
 	// TODO: return the transaction in the correct format
 	c.JSON(http.StatusCreated, transaction)
 }
+
+func GetEarningsController(c *gin.Context) {
+	transaction := models.Transaction{}
+	earnings := transaction.GetEarnings()
+	c.JSON(http.StatusOK, gin.H{"earnings": earnings})
+}
