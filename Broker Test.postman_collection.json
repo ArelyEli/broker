@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "2da8f5f8-fda0-4999-b0e3-00267c438d71",
+		"name": "Broker Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21356880"
+	},
+	"item": [
+		{
+			"name": "health check",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/health",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create merchant",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"value name\",\n    \"commission\": 30\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/v1/merchants",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"merchants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit merchants",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Name\": \"Another\",\n    \"Commission\": 50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/v1/merchants/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"merchants",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 600,\n    \"merchantID\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/v1/transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get earnings for all merchants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/v1/transactions/earnings",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"transactions",
+						"earnings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get earnings by merchant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/v1/merchants/1/earnings",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"merchants",
+						"1",
+						"earnings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
