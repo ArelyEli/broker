@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	// TODO DRY: move this to a shared package
 	g          = galidator.New()
 	customizer = g.Validator(schemas.CreateBusinessRequest{})
 )

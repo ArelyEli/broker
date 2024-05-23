@@ -12,6 +12,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	err = db.DB.AutoMigrate(&models.Transaction{})
+	if err != nil {
+		panic(err)
+	}
 
 	server.Init()
 }
