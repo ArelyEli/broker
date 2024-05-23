@@ -12,10 +12,10 @@ func Init() {
 
 	v1 := r.Group("/v1")
 
-	businessGroup := v1.Group("/business")
-	businessGroup.POST("/", controllers.CreateBusinessController)
-	businessGroup.PATCH("/:id", controllers.UpdateBusinessController)
-	businessGroup.GET("/:id/earnings", controllers.GetEarningsByBusinessController)
+	merchantGroup := v1.Group("/merchants")
+	merchantGroup.POST("/", controllers.CreateMerchantController)
+	merchantGroup.PATCH("/:id", controllers.UpdateMerchantController)
+	merchantGroup.GET("/:id/earnings", controllers.GetEarningsByMerchantController)
 
 	transactionGroup := v1.Group("/transactions")
 	transactionGroup.POST("/", controllers.CreateTransactionController)

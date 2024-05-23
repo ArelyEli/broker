@@ -27,14 +27,14 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
-func TestCreateBusinessController(t *testing.T) {
+func TestCreateMerchantController(t *testing.T) {
 	db.ClearDB()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	requestBody := schemas.CreateBusinessRequest{
-		Name:       "Test Business",
+	requestBody := schemas.CreateMerchantRequest{
+		Name:       "Test Merchant",
 		Commission: 10.0,
 	}
 	requestBodyBytes, _ := json.Marshal(requestBody)
@@ -43,24 +43,24 @@ func TestCreateBusinessController(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	c.Request = req
 
-	CreateBusinessController(c)
+	CreateMerchantController(c)
 
 	assert.Equal(t, http.StatusCreated, w.Code)
 
-	var createdBusiness models.Business
-	db.DB.First(&createdBusiness, "name = ?", "Test Business")
-	assert.Equal(t, requestBody.Name, createdBusiness.Name)
-	assert.Equal(t, requestBody.Commission, createdBusiness.Commission)
+	var createdMerchant models.Merchant
+	db.DB.First(&createdMerchant, "name = ?", "Test Merchant")
+	assert.Equal(t, requestBody.Name, createdMerchant.Name)
+	assert.Equal(t, requestBody.Commission, createdMerchant.Commission)
 }
 
-func TestCreateBusinessNoValidValueController(t *testing.T) {
+func TestCreateMerchantNoValidValueController(t *testing.T) {
 	db.ClearDB()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	requestBody := schemas.CreateBusinessRequest{
-		Name:       "Test Business",
+	requestBody := schemas.CreateMerchantRequest{
+		Name:       "Test Merchant",
 		Commission: 1000,
 	}
 	requestBodyBytes, _ := json.Marshal(requestBody)
@@ -69,25 +69,25 @@ func TestCreateBusinessNoValidValueController(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	c.Request = req
 
-	CreateBusinessController(c)
+	CreateMerchantController(c)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
-func TestUpdateBusinessController(t *testing.T) {
+func TestUpdateMerchantController(t *testing.T) {
 	db.ClearDB()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	business := models.Business{
-		Name:       "Test Business",
+	merchant := models.Merchant{
+		Name:       "Test Merchant",
 		Commission: 10.0,
 	}
-	business.CreateBusiness()
+	merchant.CreateMerchant()
 
-	requestBody := schemas.UpdateBusinessRequest{
-		Name:       "Updated Business",
+	requestBody := schemas.UpdateMerchantRequest{
+		Name:       "Updated Merchant",
 		Commission: 20.0,
 	}
 	requestBodyBytes, _ := json.Marshal(requestBody)
@@ -95,49 +95,49 @@ func TestUpdateBusinessController(t *testing.T) {
 	req, _ := http.NewRequest("PATCH", "/", bytes.NewBuffer(requestBodyBytes))
 	req.Header.Set("Content-Type", "application/json")
 	c.Request = req
-	c.Params = append(c.Params, gin.Param{Key: "id", Value: fmt.Sprintf("%d", business.ID)})
+	c.Params = append(c.Params, gin.Param{Key: "id", Value: fmt.Sprintf("%d", merchant.ID)})
 
-	UpdateBusinessController(c)
+	UpdateMerchantController(c)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	var updatedBusiness models.Business
-	updatedBusiness.GetBusiness(strconv.Itoa(int(business.ID)))
-	assert.Equal(t, requestBody.Name, updatedBusiness.Name)
-	assert.Equal(t, requestBody.Commission, updatedBusiness.Commission)
+	var updatedMerchant models.Merchant
+	updatedMerchant.GetMerchant(strconv.Itoa(int(merchant.ID)))
+	assert.Equal(t, requestBody.Name, updatedMerchant.Name)
+	assert.Equal(t, requestBody.Commission, updatedMerchant.Commission)
 }
 
-func TestGetEarningsByBusinessController(t *testing.T) {
+func TestGetEarningsByMerchantController(t *testing.T) {
 	db.ClearDB()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	business := models.Business{
-		Name:       "Test Business",
+	merchant := models.Merchant{
+		Name:       "Test Merchant",
 		Commission: 10.0,
 	}
-	business.CreateBusiness()
+	merchant.CreateMerchant()
 
 	first_transaction := models.Transaction{
 		Amount:     123.0,
-		Fee:        123.0 * business.Commission / 100,
-		BusinessID: business.ID,
+		Fee:        123.0 * merchant.Commission / 100,
+		MerchantID: merchant.ID,
 	}
 	first_transaction.CreateTransaction()
 
 	second_transaction := models.Transaction{
 		Amount:     234.0,
-		Fee:        234.0 * business.Commission / 100,
-		BusinessID: business.ID,
+		Fee:        234.0 * merchant.Commission / 100,
+		MerchantID: merchant.ID,
 	}
 	second_transaction.CreateTransaction()
 
 	req, _ := http.NewRequest("GET", "/", nil)
 	c.Request = req
-	c.Params = append(c.Params, gin.Param{Key: "id", Value: fmt.Sprintf("%d", business.ID)})
+	c.Params = append(c.Params, gin.Param{Key: "id", Value: fmt.Sprintf("%d", merchant.ID)})
 
-	GetEarningsByBusinessController(c)
+	GetEarningsByMerchantController(c)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 

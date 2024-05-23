@@ -8,7 +8,7 @@ import (
 
 func main() {
 	db.Init()
-	err := db.DB.AutoMigrate(&models.Business{})
+	err := db.DB.AutoMigrate(&models.Merchant{})
 	if err != nil {
 		panic(err)
 	}

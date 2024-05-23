@@ -9,8 +9,8 @@ type Transaction struct {
 	gorm.Model
 	Amount     float64
 	Fee        float64
-	BusinessID uint
-	Business   Business `gorm:"constraint:OnDelete:CASCADE;"`
+	MerchantID uint
+	Merchant   Merchant `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (t *Transaction) GetTransaction(id string) error {

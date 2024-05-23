@@ -20,16 +20,16 @@ func CreateTransactionController(c *gin.Context) {
 		return
 	}
 
-	business := models.Business{}
-	if err := business.GetBusiness(strconv.Itoa(int(request.BusinessID))); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+	merchant := models.Merchant{}
+	if err := merchant.GetMerchant(strconv.Itoa(int(request.MerchantID))); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Merchant not found"})
 		return
 	}
 
 	transaction := models.Transaction{
 		Amount:     request.Amount,
-		BusinessID: request.BusinessID,
-		Fee:        request.Amount * business.Commission / 100,
+		MerchantID: request.MerchantID,
+		Fee:        request.Amount * merchant.Commission / 100,
 	}
 
 	if err := transaction.CreateTransaction(); err != nil {
@@ -38,9 +38,9 @@ func CreateTransactionController(c *gin.Context) {
 	}
 	transactionResponse := schemas.TransactionResponse{
 		ID:         transaction.ID,
-		BusinessID: strconv.Itoa(int(transaction.BusinessID)),
+		MerchantID: strconv.Itoa(int(transaction.MerchantID)),
 		Amount:     transaction.Amount,
-		Commision:  business.Commission,
+		Commision:  merchant.Commission,
 		Fee:        transaction.Fee,
 		CreatedAt:  transaction.CreatedAt.Format("2006-01-02 15:04:05"),
 	}

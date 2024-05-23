@@ -12,77 +12,77 @@ import (
 var (
 	// TODO DRY: move this to a shared package
 	g          = galidator.New()
-	customizer = g.Validator(schemas.CreateBusinessRequest{})
+	customizer = g.Validator(schemas.CreateMerchantRequest{})
 )
 
-func CreateBusinessController(c *gin.Context) {
-	var input schemas.CreateBusinessRequest
+func CreateMerchantController(c *gin.Context) {
+	var input schemas.CreateMerchantRequest
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": customizer.DecryptErrors(err)})
 		return
 	}
 
-	business := models.Business{
+	merchant := models.Merchant{
 		Name:       input.Name,
 		Commission: input.Commission,
 	}
 
-	if err := business.CreateBusiness(); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create business"})
+	if err := merchant.CreateMerchant(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create merchant"})
 		return
 	}
 
-	businessResponse := schemas.BusinessResponse{
-		ID:         business.ID,
-		Name:       business.Name,
-		Commission: business.Commission,
-		CreatedAt:  business.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdateAt:   business.UpdatedAt.Format("2006-01-02 15:04:05"),
+	merchantResponse := schemas.MerchantResponse{
+		ID:         merchant.ID,
+		Name:       merchant.Name,
+		Commission: merchant.Commission,
+		CreatedAt:  merchant.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:   merchant.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
-	c.JSON(http.StatusCreated, businessResponse)
+	c.JSON(http.StatusCreated, merchantResponse)
 }
 
-func UpdateBusinessController(c *gin.Context) {
-	var input schemas.UpdateBusinessRequest
+func UpdateMerchantController(c *gin.Context) {
+	var input schemas.UpdateMerchantRequest
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": customizer.DecryptErrors(err)})
 		return
 	}
 
-	var business models.Business
-	businessID := c.Param("id")
-	if err := business.GetBusiness(businessID); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+	var merchant models.Merchant
+	merchantID := c.Param("id")
+	if err := merchant.GetMerchant(merchantID); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Merchant not found"})
 		return
 	}
 
-	err := business.UpdateBusiness(input)
+	err := merchant.UpdateMerchant(input)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update business"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update merchant"})
 		return
 	}
 
-	businessResponse := schemas.BusinessResponse{
-		ID:         business.ID,
-		Name:       business.Name,
-		Commission: business.Commission,
-		CreatedAt:  business.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdateAt:   business.UpdatedAt.Format("2006-01-02 15:04:05"),
+	merchantResponse := schemas.MerchantResponse{
+		ID:         merchant.ID,
+		Name:       merchant.Name,
+		Commission: merchant.Commission,
+		CreatedAt:  merchant.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:   merchant.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
-	c.JSON(http.StatusOK, businessResponse)
+	c.JSON(http.StatusOK, merchantResponse)
 }
 
-func GetEarningsByBusinessController(c *gin.Context) {
-	var business models.Business
-	businessID := c.Param("id")
-	if err := business.GetBusiness(businessID); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+func GetEarningsByMerchantController(c *gin.Context) {
+	var merchant models.Merchant
+	merchantID := c.Param("id")
+	if err := merchant.GetMerchant(merchantID); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Merchant not found"})
 		return
 	}
 
-	earnings := business.GetEarningsByBusiness(businessID)
+	earnings := merchant.GetEarningsByMerchant(merchantID)
 
 	c.JSON(http.StatusOK, gin.H{"earnings": earnings})
 }

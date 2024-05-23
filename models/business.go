@@ -6,17 +6,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type Business struct {
+type Merchant struct {
 	gorm.Model
 	Name       string
 	Commission float64
 }
 
-func (m *Business) CreateBusiness() error {
+func (m *Merchant) CreateMerchant() error {
 	return db.DB.Create(&m).Error
 }
 
-func (m *Business) UpdateBusiness(request schemas.UpdateBusinessRequest) error {
+func (m *Merchant) UpdateMerchant(request schemas.UpdateMerchantRequest) error {
 	if request.Name != "" {
 		m.Name = request.Name
 	}
@@ -26,13 +26,13 @@ func (m *Business) UpdateBusiness(request schemas.UpdateBusinessRequest) error {
 	return db.DB.Save(&m).Error
 }
 
-func (m *Business) GetBusiness(id string) error {
+func (m *Merchant) GetMerchant(id string) error {
 	return db.DB.First(&m, "id = ?", id).Error
 }
 
-func (m *Business) GetEarningsByBusiness(business_id string) float64 {
+func (m *Merchant) GetEarningsByMerchant(merchant_id string) float64 {
 	transaction := Transaction{}
 	var totalAmount float64
-	db.DB.Model(&transaction).Select("sum(fee)").Where("business_id = ?", business_id).Scan(&totalAmount)
+	db.DB.Model(&transaction).Select("sum(fee)").Where("merchant_id = ?", merchant_id).Scan(&totalAmount)
 	return totalAmount
 }
