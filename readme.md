@@ -18,3 +18,5 @@ docker-compose build && docker-compose up -d
 This command will start the database as well as the server and can be used without problem on port 3000
 
 For a simpler execution, I am attaching a postman file with the different endpoints.
+
+To evaluate the unit tests, a github action was created that is executed every time a PR or a push is made to the main branch.
