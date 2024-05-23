@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"arely.dev/db"
 	"arely.dev/models"
 	"arely.dev/schemas"
 	"github.com/gin-gonic/gin"
@@ -33,4 +34,30 @@ func CreateBusinessController(c *gin.Context) {
 
 	// TODO: return the business in the correct format
 	c.JSON(http.StatusCreated, business)
+}
+
+func UpdateBusinessController(c *gin.Context) {
+	var input schemas.UpdateBusinessRequest
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": customizer.DecryptErrors(err)})
+		return
+	}
+
+	var business models.Business
+	businessID := c.Param("id")
+	db.DB.First(&business, "id = ?", businessID)
+
+	if (business == models.Business{}) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	if input.Name != "" {
+		business.Name = input.Name
+	}
+	if input.Commission != 0 {
+		business.Commission = input.Commission
+	}
+	db.DB.Save(&business)
+	c.JSON(http.StatusOK, business)
 }
